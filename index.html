@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RSS агрегатор</title>
+  </head>
+  <body>
+    <div class="container-xxl py-5">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+          <header class="card border-0 shadow-sm mb-4">
+            <div class="card-body p-5 bg-primary text-white rounded">
+              <h1 class="display-4 mb-3">RSS агрегатор</h1>
+              <p class="lead mb-0">
+                Начните читать любимые блоги и новости в одном месте.
+              </p>
+            </div>
+          </header>
+
+          <main>
+            <section class="mb-5">
+              <form id="rss-form" class="row gy-2 gx-3 align-items-end">
+                <div class="col-12 col-md-9">
+                  <label for="url-input" class="form-label visually-hidden">Ссылка RSS</label>
+                  <input
+                    id="url-input"
+                    name="url"
+                    type="text"
+                    class="form-control form-control-lg"
+                    placeholder="https://example.com/feed.xml"
+                    aria-label="url"
+                    required
+                  />
+                </div>
+                <div class="col-12 col-md-3 d-grid">
+                  <button type="submit" class="btn btn-lg btn-primary">Добавить</button>
+                </div>
+              </form>
+              <p class="text-muted small mt-2 mb-0">
+                Пример: https://lorem-rss.hexlet.app/feed
+              </p>
+            </section>
+
+            <div class="row gy-4">
+              <section class="col-12 col-lg-6">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h2 class="h4 mb-0">Фиды</h2>
+                  </div>
+                  <ul class="list-group list-group-flush" id="feeds"></ul>
+                </div>
+              </section>
+              <section class="col-12 col-lg-6">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h2 class="h4 mb-0">Посты</h2>
+                  </div>
+                  <ul class="list-group list-group-flush" id="posts"></ul>
+                </div>
+              </section>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

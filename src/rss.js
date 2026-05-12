@@ -1,6 +1,17 @@
 const NETWORK_ERROR = 'networkError';
 const PARSE_ERROR = 'parseError';
 
+const generateId = () => {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+};
+
 const getProxyUrl = (url) => {
   const proxyUrl = new URL('https://allorigins.hexlet.app/get');
   proxyUrl.searchParams.set('disableCache', 'true');
@@ -25,7 +36,7 @@ const parseRss = (xmlContent) => {
   }
 
   const posts = Array.from(doc.querySelectorAll('item')).map((item) => ({
-    id: crypto.randomUUID(),
+    id: generateId(),
     title: item.querySelector('title')?.textContent?.trim() ?? '',
     description: item.querySelector('description')?.textContent?.trim() ?? '',
     link: item.querySelector('link')?.textContent?.trim() ?? '#',
@@ -33,7 +44,7 @@ const parseRss = (xmlContent) => {
 
   return {
     feed: {
-      id: crypto.randomUUID(),
+      id: generateId(),
       title: channelTitle,
       description: channelDescription,
     },

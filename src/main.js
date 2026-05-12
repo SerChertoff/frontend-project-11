@@ -19,6 +19,7 @@ const errorKeys = {
   [NETWORK_ERROR]: 'errors.network',
   [PARSE_ERROR]: 'errors.parse',
 };
+const UPDATE_INTERVAL_MS = 5000;
 
 const state = proxy({
   feeds: [],
@@ -69,6 +70,39 @@ const localizeInterface = () => {
   if (postsTitle) {
     postsTitle.textContent = i18next.t('app.posts');
   }
+};
+
+const getNewPosts = (existingLinks, loadedPosts) => loadedPosts.filter((post) => {
+  if (existingLinks.has(post.link)) {
+    return false;
+  }
+
+  existingLinks.add(post.link);
+  return true;
+});
+
+const collectNewPosts = (currentPosts, results) => {
+  const existingLinks = new Set(currentPosts.map((post) => post.link));
+
+  return results
+    .filter((result) => result.status === 'fulfilled')
+    .flatMap((result) => getNewPosts(existingLinks, result.value.posts));
+};
+
+const updateFeeds = (watchedState) => {
+  const requests = watchedState.feeds.map((feed) => loadRss(feed.url));
+
+  Promise.allSettled(requests)
+    .then((results) => {
+      const newPosts = collectNewPosts(watchedState.posts, results);
+
+      if (newPosts.length > 0) {
+        watchedState.posts.unshift(...newPosts);
+      }
+    })
+    .finally(() => {
+      setTimeout(() => updateFeeds(watchedState), UPDATE_INTERVAL_MS);
+    });
 };
 
 const runApp = () => {
@@ -131,6 +165,7 @@ const runApp = () => {
   });
 
   render(state, elements);
+  updateFeeds(state);
 };
 
 initI18n().then(runApp);

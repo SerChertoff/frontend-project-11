@@ -1,5 +1,5 @@
-import i18next from 'i18next';
-import ru from './locales/ru';
+import i18next from 'i18next'
+import ru from './locales/ru'
 
 const initI18n = () => i18next.init({
   lng: 'ru',
@@ -7,6 +7,6 @@ const initI18n = () => i18next.init({
   resources: {
     ru,
   },
-});
+})
 
-export default initI18n;
+export default initI18n

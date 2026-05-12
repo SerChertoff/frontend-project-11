@@ -22,16 +22,17 @@
             <section class="mb-5">
               <form id="rss-form" class="row gy-2 gx-3 align-items-end">
                 <div class="col-12 col-md-9">
-                  <label for="url-input" class="form-label visually-hidden">Ссылка RSS</label>
+                  <label for="url-input" class="form-label">Ссылка RSS</label>
                   <input
                     id="url-input"
                     name="url"
                     type="text"
                     class="form-control form-control-lg"
                     placeholder="https://example.com/feed.xml"
-                    aria-label="url"
+                    aria-label="Ссылка RSS"
                     required
                   />
+                  <p id="feedback" class="mt-2 mb-0 small"></p>
                 </div>
                 <div class="col-12 col-md-3 d-grid">
                   <button type="submit" class="btn btn-lg btn-primary">Добавить</button>

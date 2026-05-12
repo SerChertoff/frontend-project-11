@@ -1,9 +1,13 @@
 import * as yup from 'yup';
 
-const schema = yup.string().trim().required('Не должно быть пустым').url('Ссылка должна быть валидным URL');
+const schema = yup
+  .string()
+  .trim()
+  .required('errors.required')
+  .url('errors.invalidUrl');
 
 const validateRssUrl = (url, existingUrls) => schema
-  .notOneOf(existingUrls, 'RSS уже существует')
+  .notOneOf(existingUrls, 'errors.duplicate')
   .validate(url);
 
 export default validateRssUrl;

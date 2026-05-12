@@ -10,6 +10,9 @@ export default {
       feeds: 'Фиды',
       posts: 'Посты',
       success: 'RSS успешно загружен',
+      preview: 'Просмотр',
+      readMore: 'Читать полностью',
+      close: 'Закрыть',
     },
     errors: {
       network: 'Ошибка сети',

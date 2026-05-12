@@ -14,6 +14,10 @@ const feedback = document.querySelector('#feedback');
 const feeds = document.querySelector('#feeds');
 const posts = document.querySelector('#posts');
 const submitButton = form?.querySelector('button[type="submit"]');
+const modalTitle = document.querySelector('#postModalLabel');
+const modalBody = document.querySelector('#postModalBody');
+const modalReadMore = document.querySelector('#postModalReadMore');
+const modalCloseButton = document.querySelector('#postModalClose');
 
 const errorKeys = {
   [NETWORK_ERROR]: 'errors.network',
@@ -27,6 +31,10 @@ const state = proxy({
   form: {
     status: 'filling',
     error: null,
+  },
+  ui: {
+    readPostIds: [],
+    modalPostId: null,
   },
 });
 
@@ -70,6 +78,14 @@ const localizeInterface = () => {
   if (postsTitle) {
     postsTitle.textContent = i18next.t('app.posts');
   }
+
+  if (modalCloseButton) {
+    modalCloseButton.textContent = i18next.t('app.close');
+  }
+
+  if (modalReadMore) {
+    modalReadMore.textContent = i18next.t('app.readMore');
+  }
 };
 
 const getNewPosts = (existingLinks, loadedPosts) => loadedPosts.filter((post) => {
@@ -105,8 +121,25 @@ const updateFeeds = (watchedState) => {
     });
 };
 
+const markPostAsRead = (watchedState, postId) => {
+  if (!watchedState.ui.readPostIds.includes(postId)) {
+    watchedState.ui.readPostIds.push(postId);
+  }
+};
+
 const runApp = () => {
-  if (!form || !input || !feedback || !feeds || !posts || !submitButton) {
+  if (
+    !form
+    || !input
+    || !feedback
+    || !feeds
+    || !posts
+    || !submitButton
+    || !modalTitle
+    || !modalBody
+    || !modalReadMore
+    || !modalCloseButton
+  ) {
     return;
   }
 
@@ -118,6 +151,10 @@ const runApp = () => {
     feeds,
     posts,
     submitButton,
+    modalTitle,
+    modalBody,
+    modalReadMore,
+    modalCloseButton,
   };
 
   subscribe(state, () => {
@@ -162,6 +199,29 @@ const runApp = () => {
           input.focus();
         }
       });
+  });
+
+  posts.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) {
+      return;
+    }
+
+    const triggerElement = target.closest('[data-id]');
+    if (!triggerElement) {
+      return;
+    }
+
+    const { id } = triggerElement.dataset;
+    if (!id) {
+      return;
+    }
+
+    markPostAsRead(state, id);
+
+    if (triggerElement.tagName === 'BUTTON') {
+      state.ui.modalPostId = id;
+    }
   });
 
   render(state, elements);

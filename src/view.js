@@ -31,8 +31,12 @@ const renderPosts = (posts, container) => {
     link.href = post.link;
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
-    link.classList.add('fw-bold');
+    link.classList.add(post.isRead ? 'fw-normal' : 'fw-bold');
+    if (post.isRead) {
+      link.classList.add('link-secondary');
+    }
     link.textContent = post.title;
+    link.dataset.id = post.id;
 
     const description = document.createElement('p');
     description.classList.add('m-0', 'small', 'text-black-50', 'w-100', 'pt-2');
@@ -42,9 +46,37 @@ const renderPosts = (posts, container) => {
     body.classList.add('me-2');
     body.append(link, description);
 
-    item.append(body);
+    const previewButton = document.createElement('button');
+    previewButton.type = 'button';
+    previewButton.classList.add('btn', 'btn-outline-primary', 'btn-sm');
+    previewButton.dataset.id = post.id;
+    previewButton.dataset.bsToggle = 'modal';
+    previewButton.dataset.bsTarget = '#postModal';
+    previewButton.textContent = i18next.t('app.preview');
+
+    item.append(body, previewButton);
     container.append(item);
   });
+};
+
+const renderModal = (state, elements) => {
+  const { modalTitle, modalBody, modalReadMore, modalCloseButton } = elements;
+  const { modalPostId } = state.ui;
+  const currentPost = state.posts.find((post) => post.id === modalPostId);
+
+  modalCloseButton.textContent = i18next.t('app.close');
+  modalReadMore.textContent = i18next.t('app.readMore');
+
+  if (!currentPost) {
+    modalTitle.textContent = '';
+    modalBody.textContent = '';
+    modalReadMore.href = '#';
+    return;
+  }
+
+  modalTitle.textContent = currentPost.title;
+  modalBody.textContent = currentPost.description;
+  modalReadMore.href = currentPost.link;
 };
 
 const renderFormState = (state, elements) => {
@@ -77,7 +109,12 @@ const renderFormState = (state, elements) => {
 const render = (state, elements) => {
   renderFormState(state, elements);
   renderFeeds(state.feeds, elements.feeds);
-  renderPosts(state.posts, elements.posts);
+  const postsWithReadState = state.posts.map((post) => ({
+    ...post,
+    isRead: state.ui.readPostIds.includes(post.id),
+  }));
+  renderPosts(postsWithReadState, elements.posts);
+  renderModal(state, elements);
 };
 
 export default render;

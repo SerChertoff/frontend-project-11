@@ -4,7 +4,7 @@ export default {
       title: 'RSS агрегатор',
       description: 'Начните читать любимые блоги и новости в одном месте.',
       rssLabel: 'Ссылка RSS',
-      rssAriaLabel: 'Ссылка RSS',
+      rssAriaLabel: 'url',
       submit: 'Добавить',
       example: 'Пример: https://lorem-rss.hexlet.app/feed',
       feeds: 'Фиды',

@@ -5,21 +5,21 @@ const generateId = () => {
   if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
     return crypto.randomUUID()
   }
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     const r = (Math.random() * 16) | 0
     const v = c === 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)
   })
 }
 
-const getProxyUrl = url => {
+const getProxyUrl = (url) => {
   const proxyUrl = new URL('https://allorigins.hexlet.app/get')
   proxyUrl.searchParams.set('disableCache', 'true')
   proxyUrl.searchParams.set('url', url)
   return proxyUrl.toString()
 }
 
-const parseRss = xmlContent => {
+const parseRss = (xmlContent) => {
   const parser = new DOMParser()
   const doc = parser.parseFromString(xmlContent, 'application/xml')
   const parserError = doc.querySelector('parsererror')
@@ -52,7 +52,7 @@ const parseRss = xmlContent => {
   }
 }
 
-const loadRss = async url => {
+const loadRss = async (url) => {
   const response = await fetch(getProxyUrl(url)).catch(() => {
     throw new Error(NETWORK_ERROR)
   })

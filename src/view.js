@@ -3,7 +3,7 @@ import i18next from 'i18next'
 const renderFeeds = (feeds, container) => {
   container.innerHTML = ''
 
-  feeds.forEach(feed => {
+  feeds.forEach((feed) => {
     const item = document.createElement('li')
     item.classList.add('list-group-item', 'border-0', 'border-end-0')
 
@@ -23,7 +23,7 @@ const renderFeeds = (feeds, container) => {
 const renderPosts = (posts, container) => {
   container.innerHTML = ''
 
-  posts.forEach(post => {
+  posts.forEach((post) => {
     const item = document.createElement('li')
     item.classList.add(
       'list-group-item',

@@ -88,7 +88,7 @@ const localizeInterface = () => {
   }
 }
 
-const getNewPosts = (existingLinks, loadedPosts) => loadedPosts.filter(post => {
+const getNewPosts = (existingLinks, loadedPosts) => loadedPosts.filter((post) => {
   if (existingLinks.has(post.link)) {
     return false
   }
@@ -105,11 +105,11 @@ const collectNewPosts = (currentPosts, results) => {
     .flatMap(result => getNewPosts(existingLinks, result.value.posts))
 }
 
-const updateFeeds = watchedState => {
+const updateFeeds = (watchedState) => {
   const requests = watchedState.feeds.map(feed => loadRss(feed.url))
 
   Promise.allSettled(requests)
-    .then(results => {
+    .then((results) => {
       const newPosts = collectNewPosts(watchedState.posts, results)
 
       if (newPosts.length > 0) {
@@ -161,7 +161,7 @@ const runApp = () => {
     render(state, elements)
   })
 
-  form.addEventListener('submit', event => {
+  form.addEventListener('submit', (event) => {
     event.preventDefault()
 
     const formData = new FormData(form)
@@ -183,7 +183,7 @@ const runApp = () => {
         state.feeds.push(feedData)
         state.posts.unshift(...rss.posts)
       })
-      .catch(error => {
+      .catch((error) => {
         state.form = {
           status: 'failed',
           error: i18next.t(errorKeys[error.message] ?? error.message),
@@ -201,7 +201,7 @@ const runApp = () => {
       })
   })
 
-  posts.addEventListener('click', event => {
+  posts.addEventListener('click', (event) => {
     const target = event.target
     if (!(target instanceof Element)) {
       return
